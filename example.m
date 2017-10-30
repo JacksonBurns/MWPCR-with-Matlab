@@ -11,8 +11,8 @@ cd E:\mypackages\MWPCR-with-Matlab
 %% example 
 % choose data set
 clc;
-data_train=esp_iid_train;
-data_test=esp_iid_test;
+data_train=esp_long_train;
+data_test=esp_long_test;
 %% ÑµÁ·¼¯ÑµÁ·Ä£ÐÍ
 % compute Wi(importace score weights matrix)
 fprintf('------Start Training Model -----%s----------\n',datestr(now()));
