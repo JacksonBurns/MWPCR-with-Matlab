@@ -6,7 +6,7 @@ cd E:\mypackages\MWPCR-with-Matlab
 % postion = [repmat(1:20,1,200);
 %     repmat(reshape(repmat(1:20,20,1),1,400),1,10);
 %     reshape(repmat(1:10,400,1),1,4000)];
-% % 位置的的距离矩阵
+% 位置的的距离矩阵
 % Dis = dist(postion);
 %% example 
 % choose data set
@@ -24,7 +24,7 @@ if ismember(0,W)
     fprintf('--------!!!进行了超界处理!!!-----%s----------\n',datestr(now()));
     W(W==0)=exp(-745); % 超界处理
 end
-Wi= -4000*log(W)/(-sum(log(W)));
+Wi = -4000*log(W)/(-sum(log(W)));
 % compute We(spatial weights matrix)
 fprintf('--------Start Computing Spatial Weights Matrix-----%s----------\n',datestr(now()));
 ch=1.2;
