@@ -73,7 +73,8 @@ figure(1)
 plot(Y_train,'.')
 hold on;
 plot([ones(size(data_train,1),1),U_train]*beta,'.')
-plot(repmat(0.5,size(data_test,1),1),'-.');
+plot(repmat(0.5,size(data_train,1),1),'-.');
+% grid on;
 hold off;
 fprintf('------Finish Training Model -----%s----------\n',datestr(now()));
 %% 测试集测试模型
@@ -90,5 +91,9 @@ plot(Y_test,'.')
 hold on;
 plot([ones(size(data_test,1),1),U_test]*beta,'.')
 plot(repmat(0.5,size(data_test,1),1),'-.');
-hold off; 
+grid on;
+hold off;
+% roc曲线
+figure(3)
+plotroc((Y_test)',([ones(size(data_test,1),1),U_test]*beta)');
 fprintf('------Finish Testing Model -----%s----------\n',datestr(now()));
