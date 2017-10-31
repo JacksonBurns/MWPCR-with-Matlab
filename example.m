@@ -1,7 +1,7 @@
 cd E:\mypackages\MWPCR-with-Matlab
 %% 生成数据
 % clear;
-%需要设置噪声标准差std=0.1
+% 需要设置噪声标准差std=0.1
 % [Dis,Y_train,Y_test,esp_0,esp_iid_train,esp_iid_test,esp_short_train,esp_short_test,esp_long_train,esp_long_test] = GenerateData(0.1); %生成数据
 % postion = [repmat(1:20,1,200);
 %     repmat(reshape(repmat(1:20,20,1),1,400),1,10);
