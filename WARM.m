@@ -9,8 +9,8 @@ function[WW]=WARM(data,ch,Cn,Kloc,Kst,S0,S,Dis,X)
         Init(i,:)=OLS_loc(i,data,Dis,ch^0,X);
     end
     Init0=Init;
-    W_loc = diag(1:size(data,2));
-    W_st = diag(1:size(data,2));
+    W_loc = diag(ones(size(data,2),1));
+    W_st = diag(ones(size(data,2),1));
     fprintf('----------Iteration Begin -----%s----------\n',datestr(now()));
     dict1=false(4000,1);%标记所有停止的编号
     for i=1:S
@@ -36,14 +36,14 @@ function[WW]=WARM(data,ch,Cn,Kloc,Kst,S0,S,Dis,X)
             for index=1:size(data,2)
                beta{index,:}=updatebeta(index,ch^i,WW,Dis,data,X,Init,A);
             end
-            beta(dict1,:)=Init0(dict1,:);%停止的不进行迭代
+            beta(dict1,:)=Init0(dict1,1);%停止的不进行迭代
             if i>S0
 %                停止准则 
                 D=stopctiter(Init,Init3);
                 dict0=D>chi2inv(0.8,2);
                 dict=(~dict1)&dict0;%标记新需要停止的标号
                 dict1=dict1|dict0;%标记所有停止的编号
-                beta(dict,:)=Init0(dict,:);%停止                  
+                beta(dict,:)=Init0(dict,1);%停止                  
             end
             Init(:,1)=beta;
             fprintf('------------Update Cov -----%s----------\n',datestr(now()));
