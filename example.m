@@ -2,17 +2,28 @@ cd E:\mypackages\MWPCR-with-Matlab
 %% 生成数据
 % clear;
 % 需要设置噪声标准差std=0.1
+% tic;
 % [Dis,Y_train,Y_test,esp_0,esp_iid_train,esp_iid_test,esp_short_train,esp_short_test,esp_long_train,esp_long_test] = GenerateData(0.1); %生成数据
+% toc;
 % postion = [repmat(1:20,1,200);
 %     repmat(reshape(repmat(1:20,20,1),1,400),1,10);
 %     reshape(repmat(1:10,400,1),1,4000)];
 % 位置的的距离矩阵
 % Dis = dist(postion);
-%% example 
+%% example
 % choose data set
 clc;
 data_train=esp_long_train;
 data_test=esp_long_test;
+%% 加入异常情况
+% index=false(20,20,10);
+% index([8:16],[2:8,9:15],[4:7])=true;
+% Y_train(1:5)=1;
+% Y_train(96:100)=0;
+% index=randsample(4000,500);
+% data_train(20,index(:))=1000;
+% data_train(70,:)=data_train(70,:)+1;
+% imshow(reshape(data_train(20,:),20,[]));
 %% 训练集训练模型
 % compute Wi(importace score weights matrix)
 fprintf('------Start Training Model -----%s----------\n',datestr(now()));
@@ -69,13 +80,14 @@ end
 % 拟合多元线性回归
 [beta,~,res,~,stats]=regress(Y_train,[ones(100,1),U_train]);
 % glmfit(U_train,Y_train,'binomial','logit')
-figure(1)
+figure('visible','off');
 plot(Y_train,'.')
 hold on;
 plot([ones(size(data_train,1),1),U_train]*beta,'.')
 plot(repmat(0.5,size(data_train,1),1),'-.');
 % grid on;
 hold off;
+% print('-deps','example.esp');
 fprintf('------Finish Training Model -----%s----------\n',datestr(now()));
 %% 测试集测试模型
 % 减去均值
@@ -86,6 +98,7 @@ U_test=zeros(size(data_test,1),size(criter,2)*K);
 for index=1:size(criter,2)
     U_test(:,K*index-K+1:index*K)=data_norm_test*Qmatrix(:,:,index)*SVD{index,3}/diag(SVD{index,2}(1:K));
 end
+Y_pre=[ones(size(data_test,1),1),U_test]*beta;
 figure(2)
 plot(Y_test,'.')
 hold on;
