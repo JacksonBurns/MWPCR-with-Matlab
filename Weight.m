@@ -1,4 +1,4 @@
-% ����Ȩ�ؾ���
+% 计算权重矩阵相乘，这个计算很快
 function[sim]=Weight(Init,W_loc,Cn)
     sim=zeros(size(Init,1),size(Init,1));
     NN=size(Init,1); 
@@ -10,7 +10,7 @@ function[sim]=Weight(Init,W_loc,Cn)
         XX=Beta(j,:);
 %         diff=repmat(Init{j,1},size(Init,1),1)-cell2mat(Init(:,1));
 %         temp=cellfun(@(x) (XX-x)/XM*(XX-x)',Beta);
-        for z = find(W_loc(:,j)~=0)'
+        for z = find(W_loc(:,j)~=0)' % 先筛选在遍历
             diff=XX-Beta(z,:);
             temp(z,1)=exp(-diff*XM*diff'/Cn);
         end
