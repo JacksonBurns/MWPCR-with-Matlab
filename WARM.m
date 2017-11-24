@@ -9,22 +9,25 @@ function[WW]=WARM(data,ch,Cn,Kloc,Kst,S0,S,Dis,X)
         Init(i,:)=OLS_loc(i,data,Dis,ch^0,X);
     end
     Init0=Init;
-    W_loc = diag(ones(size(data,2),1));
-    W_st = diag(ones(size(data,2),1));
+    W_loc = ones(size(data,2),size(data,2));
+    W_st = ones(size(data,2),size(data,2));
     fprintf('----------Iteration Begin -----%s----------\n',datestr(now()));
-    dict1=false(4000,1);%标记所有停止的编号
+    dict1=false(size(data,2),1);%标记所有停止的编号
     for i=1:S
         fprintf('----------开始地第%d次迭代 ----------\n',i);
         fprintf('------------Update WW -----%s----------\n',datestr(now()));
         if Kloc
-            W_loc=(1-Dis/ch^i).*(1-Dis/ch^i)>=0;
+            W_loc=(1-Dis/ch^i).*((1-Dis/ch^i)>=0);
+            WW=W_loc.*W_st;
         end
         if Kst
-            fprintf('------------Update Similar Matrix -----%s----------\n',datestr(now()));
-            Sim=Smatrix(Init);
-            W_st=exp(-Sim/Cn); % Cn = log(100) * chi2inv(0.95,2)            
+%             fprintf('------------Update Similar Matrix -----%s----------\n',datestr(now()));
+%             Sim=Smatrix(Init);
+%             W_st=exp(-Sim/Cn); % Cn = log(100) * chi2inv(0.95,2)
+        WW=Weight(Init,W_loc,Cn);
         end
-        WW=W_loc.*W_st;
+%         WW=W_loc.*W_st;
+
         if i<S
             fprintf('------------Update A -----%s----------\n',datestr(now()));
             A=cell(size(data,2),1);
